@@ -1,6 +1,6 @@
-package ru.mrpetchenka.flans.utils;
+package ru.mrpetchenka.flanscore.utils;
 
-public enum FlansEnumLog {
+public enum EnumLog {
     Notice("\u001B[32m"),
     Verbose("\u001B[36m"),
     Debug("\u001B[34m"),
@@ -10,7 +10,7 @@ public enum FlansEnumLog {
 
     private final String color;
 
-    FlansEnumLog(String color) {
+    EnumLog(String color) {
         this.color = color;
     }
 

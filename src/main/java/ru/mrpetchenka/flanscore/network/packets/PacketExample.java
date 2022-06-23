@@ -1,15 +1,14 @@
-package ru.mrpetchenka.flans.network.packets;
+package ru.mrpetchenka.flanscore.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import ru.mrpetchenka.flans.network.PacketBase;
-import ru.mrpetchenka.flans.utils.FlansEnumLog;
-import ru.mrpetchenka.flans.utils.FlansLogger;
+import ru.mrpetchenka.flanscore.network.PacketBase;
+import ru.mrpetchenka.flanscore.utils.EnumLog;
+import ru.mrpetchenka.flanscore.utils.Logger;
 
 public class PacketExample extends PacketBase {
-
     private int testInt;
     private float testFloat;
     private String testString;
@@ -54,11 +53,11 @@ public class PacketExample extends PacketBase {
 
     @Override
     protected void handleServerSide(EntityPlayerMP player) {
-        FlansLogger.log(FlansEnumLog.Verbose, "Perform an action on server " + testInt + "  " + testFloat + "  " + testString + "  " + testBoolean);
+        Logger.log(EnumLog.Verbose, "Perform an action on server " + testInt + "  " + testFloat + "  " + testString + "  " + testBoolean);
     }
 
     @Override
     protected void handleClientSide(EntityPlayer player) {
-        FlansLogger.log(FlansEnumLog.Verbose, "Perform an action on client " + testInt + "  " + testFloat + "  " + testString + "  " + testBoolean);
+        Logger.log(EnumLog.Verbose, "Perform an action on client " + testInt + "  " + testFloat + "  " + testString + "  " + testBoolean);
     }
 }

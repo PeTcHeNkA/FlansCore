@@ -1,4 +1,4 @@
-package ru.mrpetchenka.flans.network;
+package ru.mrpetchenka.flanscore.network;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
@@ -19,10 +19,10 @@ import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
-import ru.mrpetchenka.flans.network.packets.PacketExample;
-import ru.mrpetchenka.flans.utils.FlansBackend;
-import ru.mrpetchenka.flans.utils.FlansEnumLog;
-import ru.mrpetchenka.flans.utils.FlansLogger;
+import ru.mrpetchenka.flanscore.network.packets.PacketExample;
+import ru.mrpetchenka.flanscore.utils.Backend;
+import ru.mrpetchenka.flanscore.utils.EnumLog;
+import ru.mrpetchenka.flanscore.utils.Logger;
 
 import java.util.*;
 
@@ -35,14 +35,14 @@ public class PacketHandler extends MessageToMessageCodec<FMLProxyPacket, PacketB
     private EnumMap<Side, FMLEmbeddedChannel> channels;
 
     //the list of registered packets. Should contain no more than 256 packets
-    private LinkedList<Class<? extends PacketBase>> packets = new LinkedList<Class<? extends PacketBase>>();
+    private final LinkedList<Class<? extends PacketBase>> packets = new LinkedList<Class<? extends PacketBase>>();
 
     //whether or not mod has initialised yet. Once true, no more packets may be registered
     private boolean modInitialised = false;
 
     //initialisation method called from FMLInitializationEvent in mod
     public void init() {
-        channels = NetworkRegistry.INSTANCE.newChannel(FlansBackend.modid, this);
+        channels = NetworkRegistry.INSTANCE.newChannel(Backend.modid, this);
         registerPacket(PacketExample.class);
     }
 
@@ -71,17 +71,17 @@ public class PacketHandler extends MessageToMessageCodec<FMLProxyPacket, PacketB
     //registers a packet with the handler
     public boolean registerPacket(Class<? extends PacketBase> cl) {
         if (packets.size() > 256) {
-            FlansLogger.log(FlansEnumLog.Error, "Packet limit exceeded in " + FlansBackend.name + " packet handler by packet " + cl.getCanonicalName());
+            Logger.log(EnumLog.Error, "Packet limit exceeded in " + Backend.name + " packet handler by packet " + cl.getCanonicalName());
             return false;
         }
 
         if (packets.contains(cl)) {
-            FlansLogger.log(FlansEnumLog.Error, "Tried to register " + cl.getCanonicalName() + " packet class twice");
+            Logger.log(EnumLog.Error, "Tried to register " + cl.getCanonicalName() + " packet class twice");
             return false;
         }
 
         if (modInitialised) {
-            FlansLogger.log(FlansEnumLog.Error, "Tried to register packet " + cl.getCanonicalName() + " after mod initialisation");
+            Logger.log(EnumLog.Error, "Tried to register packet " + cl.getCanonicalName() + " after mod initialisation");
             return false;
         }
 
