@@ -19,7 +19,9 @@ import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
-import ru.mrpetchenka.flanscore.network.packets.PacketExample;
+import ru.mrpetchenka.flanscore.network.packets.dummy.DamageMessage;
+import ru.mrpetchenka.flanscore.network.packets.gun.PacketGunFire;
+import ru.mrpetchenka.flanscore.network.packets.dummy.SyncEquipmentMessage;
 import ru.mrpetchenka.flanscore.utils.Backend;
 import ru.mrpetchenka.flanscore.utils.EnumLog;
 import ru.mrpetchenka.flanscore.utils.Logger;
@@ -43,7 +45,11 @@ public class PacketHandler extends MessageToMessageCodec<FMLProxyPacket, PacketB
     //initialisation method called from FMLInitializationEvent in mod
     public void init() {
         channels = NetworkRegistry.INSTANCE.newChannel(Backend.modid, this);
-        registerPacket(PacketExample.class);
+        //gun
+        registerPacket(PacketGunFire.class);
+        //dummy
+        registerPacket(SyncEquipmentMessage.class);
+        registerPacket(DamageMessage.class);
     }
 
     //post-Initialisation method called from FMLPostInitializationEvent in mod
