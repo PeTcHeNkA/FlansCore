@@ -31,7 +31,7 @@ public class RenderFloatingNumber extends Render {
         double l = Math.sqrt(xd * xd + yd * yd + zd * zd);
         double scale = 0.01 * l;
         if (dps) {
-            scale += 0.029999999329447746;
+            scale += 0.03;
         }
         GL11.glScaled(-scale, -scale, scale);
         GL11.glTranslated(0.0, -l / 10.0, 0.0);

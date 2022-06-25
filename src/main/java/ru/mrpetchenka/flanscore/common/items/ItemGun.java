@@ -36,6 +36,7 @@ public class ItemGun extends Item {
     private List<EntityTracerGloomy.BulletHitPosition> hits = new ArrayList<>();
 
     public ItemGun(String stick) {
+        this.setMaxStackSize(1);
         this.setTextureName(stick);
         this.setUnlocalizedName(stick);
         this.setNoRepair();

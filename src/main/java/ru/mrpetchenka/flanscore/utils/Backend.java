@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 public @interface Backend {
     String modid = "flanscore";
     String name = "FlansCore";
-    String version = "0.0.1";
+    String version = "0.0.3";
     String clientSide = "ru.mrpetchenka." + modid + ".client.ClientProxy";
     String serverSide = "ru.mrpetchenka." + modid + ".common.CommonProxy";
     String author = "mrpetchenka";

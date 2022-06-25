@@ -11,11 +11,7 @@ public class EntityFloatingNumber extends Entity implements IEntityAdditionalSpa
     public float damage;
     protected int speed;
 
-    public EntityFloatingNumber(final World world) {
-        super(world);
-    }
-
-    public EntityFloatingNumber(final World world, final float damage, final double x, final double y, final double z) {
+    public EntityFloatingNumber(World world, float damage, double x, double y, double z) {
         super(world);
         this.damage = damage;
         this.posX = x;
@@ -24,6 +20,10 @@ public class EntityFloatingNumber extends Entity implements IEntityAdditionalSpa
         this.lastTickPosY = y;
         this.posZ = z;
         this.lastTickPosZ = z;
+    }
+
+    public EntityFloatingNumber(World world) {
+        super(world);
     }
 
     protected void entityInit() {
@@ -43,25 +43,25 @@ public class EntityFloatingNumber extends Entity implements IEntityAdditionalSpa
         }
     }
 
-    public void moveEntity(final double p_70091_1_, final double p_70091_3_, final double p_70091_5_) {
+    public void moveEntity(double x, double y, double z) {
     }
 
-    public void reSet(final float damage) {
+    public void reSet(float damage) {
         this.damage = damage;
         this.age = 0;
     }
 
-    protected void readEntityFromNBT(final NBTTagCompound p_70037_1_) {
+    protected void readEntityFromNBT(NBTTagCompound nbt) {
     }
 
-    protected void writeEntityToNBT(final NBTTagCompound p_70014_1_) {
+    protected void writeEntityToNBT(NBTTagCompound nbt) {
     }
 
-    public void writeSpawnData(final ByteBuf buffer) {
+    public void writeSpawnData(ByteBuf buffer) {
         buffer.writeFloat(this.damage);
     }
 
-    public void readSpawnData(final ByteBuf additionalData) {
+    public void readSpawnData(ByteBuf additionalData) {
         this.damage = additionalData.readFloat();
     }
 }

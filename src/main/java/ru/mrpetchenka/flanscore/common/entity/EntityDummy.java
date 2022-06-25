@@ -7,8 +7,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
@@ -17,10 +15,8 @@ import net.minecraftforge.common.ForgeHooks;
 import ru.mrpetchenka.flanscore.FlansCore;
 import ru.mrpetchenka.flanscore.common.items.ModItems;
 import ru.mrpetchenka.flanscore.network.packets.dummy.DamageMessage;
-import ru.mrpetchenka.flanscore.network.packets.dummy.SyncEquipmentMessage;
 
-public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnData
-{
+public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnData {
     private float customRotation;
     public float shake;
     public float shakeAnimation;
@@ -32,93 +28,26 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
 
     public EntityDummy(World world) {
         super(world);
-        for (int i = 0; i < this.equipmentDropChances.length; ++i) {
-            this.equipmentDropChances[i] = 1.1f;
-        }
     }
 
-    public void setPlacementRotation(Vec3 lookVector, int side) {
-        int r = 0;
-        if (side == 0 || side == 1) {
-            r = (int)(Math.atan2(lookVector.zCoord, lookVector.xCoord) * 360.0 / 6.283185307179586);
-            r += 90;
-        }
-        else if (side == 2) {
-            r = 180;
-        }
-        else if (side == 3) {
-            r = 0;
-        }
-        else if (side == 4) {
-            r = 90;
-        }
-        else if (side == 5) {
-            r = 270;
-        }
-        this.customRotation = r;
+    public void setPlacementRotation(Vec3 lookVector) {
+        this.customRotation = (int) (Math.atan2(lookVector.zCoord, lookVector.xCoord) * 360.0 / 6.2) + 90;
         this.setCustomRotationStuff();
     }
 
     private void setCustomRotationStuff() {
-        float customRotation;
-        float r = customRotation = this.customRotation;
-        this.rotationYawHead = customRotation;
-        this.prevRotationYawHead = customRotation;
-        float n = r;
-        this.rotationYaw = n;
-        this.prevRotationYaw = n;
-        this.newRotationYaw = r;
-        float n2 = r;
-        this.renderYawOffset = n2;
-        this.prevRenderYawOffset = n2;
+        this.rotationYawHead = this.customRotation;
+        this.prevRotationYawHead = this.customRotation;
+        this.rotationYaw = this.customRotation;
+        this.prevRotationYaw = this.customRotation;
+        this.newRotationYaw = this.customRotation;
+        this.renderYawOffset = this.customRotation;
+        this.prevRenderYawOffset = this.customRotation;
         this.randomYawVelocity = 0.0f;
     }
 
-    protected boolean interact(EntityPlayer player) {
-        ItemStack stack = player.getCurrentEquippedItem();
-        if (stack != null) {
-            Item item = stack.getItem();
-            for (int i = 0; i < 4; ++i) {
-                if (item.isValidArmor(stack, i, (Entity)player)) {
-                    ItemStack armor = this.getEquipmentInSlot(4 - i);
-                    if (armor != null && !this.worldObj.isRemote) {
-                        this.entityDropItem(armor, 1.0f);
-                    }
-                    armor = stack.copy();
-                    armor.stackSize = 1;
-                    if (!this.worldObj.isRemote) {
-                        FlansCore.getPacketHandler().sendToAllAround(new SyncEquipmentMessage(this.getEntityId(), 4 - i, armor), new NetworkRegistry.TargetPoint(this.dimension, this.posX, this.posY, this.posZ, 20.0));
-                    }
-                    this.setCurrentItemOrArmor(4 - i, armor);
-                    ItemStack itemStack = stack;
-                    --itemStack.stackSize;
-                    return true;
-                }
-            }
-            return false;
-        }
-        if (!player.isSneaking()) {
-            return false;
-        }
-        for (int j = 0; j < 4; ++j) {
-            ItemStack armor2 = this.getEquipmentInSlot(4 - j);
-            if (armor2 != null) {
-                if (!this.worldObj.isRemote) {
-                    if (!player.capabilities.isCreativeMode) {
-                        this.entityDropItem(armor2, 1.0f);
-                    }
-                    FlansCore.getPacketHandler().sendToAllAround(new SyncEquipmentMessage(this.getEntityId(), 4 - j, null), new NetworkRegistry.TargetPoint(this.dimension, this.posX, this.posY, this.posZ, 20.0));
-                }
-                this.setCurrentItemOrArmor(4 - j, (ItemStack)null);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void dismantle() {
-        if (!this.worldObj.isRemote) {
-            this.dropEquipment(true, 999);
+    public void dismantle(EntityPlayer player) {
+        if (!this.worldObj.isRemote && !player.inventory.hasItem(ModItems.itemDummy)) {
             this.dropItem(ModItems.itemDummy, 1);
         }
         this.setDead();
@@ -126,9 +55,9 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
 
     public boolean attackEntityFrom(DamageSource source, float damage) {
         if (source.damageType.equals("player")) {
-            EntityPlayer player = (EntityPlayer)source.getEntity();
+            EntityPlayer player = (EntityPlayer) source.getEntity();
             if (player.isSneaking() && player.getCurrentEquippedItem() == null) {
-                this.dismantle();
+                this.dismantle(player);
                 return false;
             }
         }
@@ -137,13 +66,12 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
                 return false;
             }
             this.lastDamage = damage;
-        }
-        else {
+        } else {
             this.lastDamage = damage;
             this.hurtResistantTime = this.maxHurtResistantTime;
         }
         if (!this.isEntityInvulnerable()) {
-            damage = ForgeHooks.onLivingHurt((EntityLivingBase)this, source, damage);
+            damage = ForgeHooks.onLivingHurt((EntityLivingBase) this, source, damage);
             if (damage > 0.0f) {
                 damage = this.applyArmorCalculations(source, damage);
                 float f1;
@@ -156,8 +84,7 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
             this.lastDamage += damage;
             this.shake += damage;
             this.shake = Math.min(this.shake, 30.0f);
-        }
-        else {
+        } else {
             this.shake = Math.min(damage, 30.0f);
             this.lastDamage = damage;
             this.lastDamageTick = this.ticksExisted;
@@ -207,7 +134,7 @@ public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnD
                 float seconds = (this.lastDamageTick - this.firstDamageTick) / 20.0f + 1.0f;
                 float dps = this.damageTaken / seconds;
                 EntityFloatingNumber number = new EntityDpsFloatingNumber(this.worldObj, dps, this.posX, this.posY + 3.0, this.posZ);
-                this.worldObj.spawnEntityInWorld((Entity)number);
+                this.worldObj.spawnEntityInWorld((Entity) number);
             }
             this.damageTaken = 0.0f;
             this.firstDamageTick = 0;

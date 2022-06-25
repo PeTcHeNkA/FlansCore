@@ -53,7 +53,7 @@ public class DamageMessage extends PacketBase {
 
         Entity entity = Minecraft.getMinecraft().theWorld.getEntityByID(this.entityID);
         if (entity != null && entity instanceof EntityDummy) {
-            EntityDummy dummy = (EntityDummy)entity;
+            EntityDummy dummy = (EntityDummy) entity;
             dummy.shake = this.shakeAmount;
             dummy.setCustomNameTag(String.valueOf(this.damage / 2.0f));
         }

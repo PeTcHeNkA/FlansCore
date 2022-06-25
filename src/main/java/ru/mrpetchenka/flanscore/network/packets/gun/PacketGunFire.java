@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import ru.mrpetchenka.flanscore.FlansCore;
 import ru.mrpetchenka.flanscore.common.entity.EntityTracerGloomy;
 import ru.mrpetchenka.flanscore.common.items.ItemGun;
 import ru.mrpetchenka.flanscore.network.PacketBase;
@@ -20,8 +19,7 @@ import ru.mrpetchenka.flanscore.utils.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PacketGunFire extends PacketBase
-{
+public class PacketGunFire extends PacketBase {
     public boolean held;
     public boolean left;
     public float yaw;
@@ -32,7 +30,7 @@ public class PacketGunFire extends PacketBase
     public PacketGunFire() {
     }
 
-    public PacketGunFire(final boolean l, final boolean h, final float y, final float p, List<EntityTracerGloomy.BulletHitPosition> hits) {
+    public PacketGunFire(boolean l, boolean h, float y, float p, List<EntityTracerGloomy.BulletHitPosition> hits) {
         this.left = l;
         this.held = h;
         this.yaw = y;
@@ -41,7 +39,7 @@ public class PacketGunFire extends PacketBase
     }
 
     @Override
-    public void encodeInto(final ChannelHandlerContext ctx, final ByteBuf data) {
+    public void encodeInto(ChannelHandlerContext ctx, ByteBuf data) {
         data.writeBoolean(this.held);
         data.writeBoolean(this.left);
         data.writeFloat(this.yaw);
@@ -54,15 +52,13 @@ public class PacketGunFire extends PacketBase
             data.writeDouble(hit.hitVec.zCoord);
             if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.MISS) {
                 data.writeInt(0);
-            }
-            else if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+            } else if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                 data.writeInt(1);
                 data.writeInt(hit.blockX);
                 data.writeInt(hit.blockY);
                 data.writeInt(hit.blockZ);
                 data.writeInt(hit.sideHit);
-            }
-            else {
+            } else {
                 data.writeInt(2);
                 data.writeInt(hit.entityHit.getEntityId());
             }
@@ -70,7 +66,7 @@ public class PacketGunFire extends PacketBase
     }
 
     @Override
-    public void decodeInto(final ChannelHandlerContext ctx, final ByteBuf data) {
+    public void decodeInto(ChannelHandlerContext ctx, ByteBuf data) {
         this.held = data.readBoolean();
         this.left = data.readBoolean();
         this.yaw = data.readFloat();
@@ -79,9 +75,9 @@ public class PacketGunFire extends PacketBase
         this.hits = new ArrayList<EntityTracerGloomy.BulletHitPosition>(size);
         for (int i = 0; i < size; ++i) {
             EntityTracerGloomy.BulletHitPosition hit = null;
-            final float distance = data.readFloat();
-            final Vec3 hitVec = Vec3.createVectorHelper(data.readDouble(), data.readDouble(), data.readDouble());
-            final int type = data.readInt();
+            float distance = data.readFloat();
+            Vec3 hitVec = Vec3.createVectorHelper(data.readDouble(), data.readDouble(), data.readDouble());
+            int type = data.readInt();
             switch (type) {
                 case 0: {
                     hit = new EntityTracerGloomy.BulletHitPosition(0, 0, 0, 0, hitVec);
@@ -108,8 +104,8 @@ public class PacketGunFire extends PacketBase
     }
 
     @Override
-    public void handleServerSide(final EntityPlayerMP playerEntity) {
-        final ItemStack currentItem = playerEntity.inventory.getCurrentItem();
+    public void handleServerSide(EntityPlayerMP playerEntity) {
+        ItemStack currentItem = playerEntity.inventory.getCurrentItem();
         if (currentItem != null && currentItem.getItem() != null && currentItem.getItem() instanceof ItemGun) {
             for (EntityTracerGloomy.BulletHitPosition hit : this.hits) {
                 if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
@@ -120,8 +116,8 @@ public class PacketGunFire extends PacketBase
                     hit.typeOfHit = MovingObjectPosition.MovingObjectType.MISS;
                 }
             }
-            final float bkYaw = playerEntity.rotationYaw;
-            final float bkPitch = playerEntity.rotationPitch;
+            float bkYaw = playerEntity.rotationYaw;
+            float bkPitch = playerEntity.rotationPitch;
             playerEntity.rotationYaw = this.yaw;
             playerEntity.rotationPitch = this.pitch;
             playerEntity.rotationYaw = bkYaw;
@@ -131,7 +127,7 @@ public class PacketGunFire extends PacketBase
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void handleClientSide(final EntityPlayer clientPlayer) {
+    public void handleClientSide(EntityPlayer clientPlayer) {
         Logger.log(EnumLog.Warning, "Received gun button packet on client. Skipping.");
     }
 }

@@ -12,45 +12,20 @@ import ru.mrpetchenka.flanscore.utils.Backend;
 
 public class ItemDummy extends Item {
     public ItemDummy(String name) {
+        this.setMaxStackSize(1);
         this.setUnlocalizedName(name);
         this.setTextureName(Backend.modid + ":" + name);
+        this.setNoRepair();
         this.setCreativeTab(ModCreativeTabs.tabFlanGuns);
         GameRegistry.registerItem(this, name);
     }
 
-    public boolean onItemUse(final ItemStack stack, final EntityPlayer player, final World world, int x, int y, int z, final int side, final float fx, final float fy, final float fz) {
-        if (!world.isRemote) {
-            switch (side) {
-                case 0: {
-                    --y;
-                    --y;
-                    break;
-                }
-                case 1: {
-                    ++y;
-                    break;
-                }
-                case 2: {
-                    --z;
-                    break;
-                }
-                case 3: {
-                    ++z;
-                    break;
-                }
-                case 4: {
-                    --x;
-                    break;
-                }
-                case 5: {
-                    ++x;
-                    break;
-                }
-            }
-            final Vec3 foo = player.getLookVec();
-            final EntityDummy entity = new EntityDummy(world);
-            entity.setPosition(x + 0.5, (double) y, z + 0.5);
-            entity.setPlacementRotation(foo, side);
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float fx, float fy, float fz) {
+        if (!world.isRemote && side == 1) {
+            Vec3 foo = player.getLookVec();
+            EntityDummy entity = new EntityDummy(world);
+            entity.setPosition(x + 0.5, y + 1, z + 0.5);
+            entity.setPlacementRotation(foo);
             world.spawnEntityInWorld(entity);
             --stack.stackSize;
         }

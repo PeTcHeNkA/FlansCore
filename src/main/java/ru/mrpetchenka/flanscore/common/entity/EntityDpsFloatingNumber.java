@@ -2,13 +2,12 @@ package ru.mrpetchenka.flanscore.common.entity;
 
 import net.minecraft.world.World;
 
-public class EntityDpsFloatingNumber extends EntityFloatingNumber
-{
-    public EntityDpsFloatingNumber(final World world) {
+public class EntityDpsFloatingNumber extends EntityFloatingNumber {
+    public EntityDpsFloatingNumber(World world) {
         super(world);
     }
 
-    public EntityDpsFloatingNumber(final World world, final float damage, final double x, final double y, final double z) {
+    public EntityDpsFloatingNumber(World world, float damage, double x, double y, double z) {
         super(world, damage, x, y, z);
     }
 
@@ -26,8 +25,7 @@ public class EntityDpsFloatingNumber extends EntityFloatingNumber
         this.posY += this.speed / 500.0;
         if (this.speed > 1) {
             this.speed /= 2;
-        }
-        else if (this.speed == 1) {
+        } else if (this.speed == 1) {
             this.speed = 0;
         }
     }

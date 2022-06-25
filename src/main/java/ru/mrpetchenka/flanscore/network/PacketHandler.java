@@ -21,7 +21,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
 import ru.mrpetchenka.flanscore.network.packets.dummy.DamageMessage;
 import ru.mrpetchenka.flanscore.network.packets.gun.PacketGunFire;
-import ru.mrpetchenka.flanscore.network.packets.dummy.SyncEquipmentMessage;
 import ru.mrpetchenka.flanscore.utils.Backend;
 import ru.mrpetchenka.flanscore.utils.EnumLog;
 import ru.mrpetchenka.flanscore.utils.Logger;
@@ -48,15 +47,13 @@ public class PacketHandler extends MessageToMessageCodec<FMLProxyPacket, PacketB
         //gun
         registerPacket(PacketGunFire.class);
         //dummy
-        registerPacket(SyncEquipmentMessage.class);
         registerPacket(DamageMessage.class);
     }
 
     //post-Initialisation method called from FMLPostInitializationEvent in mod
     //logically sorts the packets client and server side to ensure a matching ordering
     public void postInit() {
-        if (modInitialised)
-            return;
+        if (modInitialised) return;
 
         modInitialised = true;
 
@@ -66,8 +63,7 @@ public class PacketHandler extends MessageToMessageCodec<FMLProxyPacket, PacketB
             public int compare(Class<? extends PacketBase> c1, Class<? extends PacketBase> c2) {
                 int com = String.CASE_INSENSITIVE_ORDER.compare(c1.getCanonicalName(), c2.getCanonicalName());
 
-                if (com == 0)
-                    com = c1.getCanonicalName().compareTo(c2.getCanonicalName());
+                if (com == 0) com = c1.getCanonicalName().compareTo(c2.getCanonicalName());
 
                 return com;
             }
@@ -104,8 +100,7 @@ public class PacketHandler extends MessageToMessageCodec<FMLProxyPacket, PacketB
         Class<? extends PacketBase> cl = msg.getClass();
 
         //if this packet has not been registered by our handler, reject it
-        if (!packets.contains(cl))
-            throw new NullPointerException("Packet not registered : " + cl.getCanonicalName());
+        if (!packets.contains(cl)) throw new NullPointerException("Packet not registered : " + cl.getCanonicalName());
 
         //like a packet ID. Stored as the first entry in the packet code for recognition
         byte discriminator = (byte) packets.indexOf(cl);
@@ -131,8 +126,7 @@ public class PacketHandler extends MessageToMessageCodec<FMLProxyPacket, PacketB
         Class<? extends PacketBase> cl = packets.get(discriminator);
 
         //if this discriminator returns no class, reject it
-        if (cl == null)
-            throw new NullPointerException("Packet not registered for discriminator : " + discriminator);
+        if (cl == null) throw new NullPointerException("Packet not registered for discriminator : " + discriminator);
 
         //create an empty packet and decode our packet data into it
         PacketBase packet = cl.newInstance();
