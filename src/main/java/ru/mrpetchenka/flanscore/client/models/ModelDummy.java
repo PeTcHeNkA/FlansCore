@@ -5,15 +5,12 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public class ModelDummy extends ModelBiped {
-    public ModelRenderer bipedHead;
-    public ModelRenderer bipedHeadwear;
-    public ModelRenderer bipedBody;
-    public ModelRenderer bipedRightArm;
-    public ModelRenderer bipedLeftArm;
-    public ModelRenderer bipedRightLeg;
-    public ModelRenderer bipedLeftLeg;
-    public ModelRenderer bipedEars;
-    public ModelRenderer bipedCloak;
+    private final ModelRenderer bipedHead;
+    private final ModelRenderer bipedBody;
+    private final ModelRenderer bipedRightArm;
+    private final ModelRenderer bipedLeftArm;
+    private final ModelRenderer bipedRightLeg;
+    private final ModelRenderer bipedLeftLeg;
 
     public ModelDummy(float size, float rad) {
         this(size, rad, 64, 32);
@@ -35,13 +32,13 @@ public class ModelDummy extends ModelBiped {
         this.bipedRightArm = new ModelRenderer(this, 40, 16);
         this.bipedRightArm.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, size);
         this.bipedRightArm.setRotationPoint(-5.0F, 2.0F + rad, 0.0F);
-        this.bipedRightArm.rotateAngleZ = ((float)Math.PI / 2F);
+        this.bipedRightArm.rotateAngleZ = ((float) Math.PI / 2F);
         //Left arm
         this.bipedLeftArm = new ModelRenderer(this, 40, 16);
         this.bipedLeftArm.mirror = true;
         this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, size);
         this.bipedLeftArm.setRotationPoint(5.0F, 2.0F + rad, 0.0F);
-        this.bipedLeftArm.rotateAngleZ = -((float)Math.PI / 2F);
+        this.bipedLeftArm.rotateAngleZ = -((float) Math.PI / 2F);
         //Right leg
         this.bipedRightLeg = new ModelRenderer(this, 0, 16);
         this.bipedRightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, size);

@@ -1,5 +1,6 @@
 package ru.mrpetchenka.flanscore.common.items;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -18,31 +19,33 @@ import net.minecraftforge.event.world.BlockEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import ru.mrpetchenka.flanscore.FlansCore;
-import ru.mrpetchenka.flanscore.common.entity.EntityTracerGloomy;
+import ru.mrpetchenka.flanscore.common.entity.gun.EntityTracerGloomy;
 import ru.mrpetchenka.flanscore.common.tabs.ModCreativeTabs;
-import ru.mrpetchenka.flanscore.network.PacketBase;
 import ru.mrpetchenka.flanscore.network.packets.gun.PacketGunFire;
+import ru.mrpetchenka.flanscore.network.packets.gun.PacketShootAdditions;
+import ru.mrpetchenka.flanscore.utils.Backend;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemGun extends Item {
-
     private static boolean rightMouseHeld;
+
     private static boolean lastRightMouseHeld;
     private static boolean leftMouseHeld;
     private static boolean lastLeftMouseHeld;
 
     private List<EntityTracerGloomy.BulletHitPosition> hits = new ArrayList<>();
 
-    public ItemGun(String stick) {
+    public ItemGun(String name) {
         this.setMaxStackSize(1);
-        this.setTextureName(stick);
-        this.setUnlocalizedName(stick);
+        this.setTextureName(Backend.modid + ":" + name);
+        this.setUnlocalizedName(name);
         this.setNoRepair();
         this.setCreativeTab(ModCreativeTabs.tabFlanGuns);
         MinecraftForge.EVENT_BUS.register(this);
-        GameRegistry.registerItem(this, stick);
+        FMLCommonHandler.instance().bus().register(this);
+        GameRegistry.registerItem(this, name);
     }
 
     public void onUpdate(ItemStack itemstack, World world, Entity pEnt, int i, boolean flag) {
@@ -61,13 +64,17 @@ public class ItemGun extends Item {
             rightMouseHeld = Mouse.isButtonDown(0);
             leftMouseHeld = Mouse.isButtonDown(1);
 
-            this.hits.clear();
-            Vec3 posVec = Vec3.createVectorHelper(player.posX, player.posY + (double) player.getEyeHeight(), player.posZ);
-            EntityTracerGloomy.BulletHitPosition hit = EntityTracerGloomy.trace(world, posVec, player.rotationYaw, player.rotationPitch, Item.itemRand.nextFloat() * 10, 128.0F, player);
-            this.hits.add(hit);
+            if ((rightMouseHeld)) {
+                this.hits.clear();
+                Vec3 posVec = Vec3.createVectorHelper(player.posX, player.posY + (double) player.getEyeHeight(), player.posZ);
+                EntityTracerGloomy.BulletHitPosition hit = EntityTracerGloomy.trace(world, posVec, player.rotationYaw, player.rotationPitch, 0, 128.0F, player);
+                this.hits.add(hit);
 
-            if (rightMouseHeld && !lastRightMouseHeld) {
-                FlansCore.getPacketHandler().sendToServer((PacketBase) (new PacketGunFire(true, true, player.rotationYaw, player.rotationPitch, hits)));
+                //render debug tracer
+                FlansCore.getPacketHandler().sendToAll(new PacketShootAdditions(player.getCommandSenderName(), hit.hitVec.xCoord, hit.hitVec.yCoord, hit.hitVec.zCoord));
+
+                //send packet of fire
+                FlansCore.getPacketHandler().sendToServer(new PacketGunFire(true, true, player.rotationYaw, player.rotationPitch, hits));
             }
         }
     }
@@ -78,6 +85,10 @@ public class ItemGun extends Item {
         } else {
             list.add("Вставьте магазин");
         }
+    }
+
+    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
+        return true;
     }
 
     public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {

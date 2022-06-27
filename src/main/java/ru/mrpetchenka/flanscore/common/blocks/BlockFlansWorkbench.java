@@ -11,9 +11,9 @@ import ru.mrpetchenka.flanscore.common.tabs.ModCreativeTabs;
 import ru.mrpetchenka.flanscore.utils.Backend;
 
 public class BlockFlansWorkbench extends Block {
-    private IIcon side;
-    private IIcon top;
-    private IIcon bottom;
+    private static IIcon ISide;
+    private static IIcon ITop;
+    private static IIcon IBottom;
 
     public BlockFlansWorkbench() {
         super(Material.iron);
@@ -26,18 +26,18 @@ public class BlockFlansWorkbench extends Block {
 
     public IIcon getIcon(int side, int meta) {
         if (side == 1) {
-            return this.top;
+            return ITop;
         }
         if (side == 0) {
-            return this.bottom;
+            return IBottom;
         }
-        return this.side;
+        return ISide;
     }
 
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
-        this.top = register.registerIcon(Backend.modid + ":" + "workbenchTop");
-        this.bottom = register.registerIcon(Backend.modid + ":" + "workbenchBottom");
-        this.side = register.registerIcon(Backend.modid + ":" + "workbenchSide");
+        ITop = register.registerIcon(Backend.modid + ":" + "workbenchTop");
+        IBottom = register.registerIcon(Backend.modid + ":" + "workbenchBottom");
+        ISide = register.registerIcon(Backend.modid + ":" + "workbenchSide");
     }
 }

@@ -2,6 +2,9 @@ package ru.mrpetchenka.flanscore.common.entity;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
 import ru.mrpetchenka.flanscore.FlansCore;
+import ru.mrpetchenka.flanscore.common.entity.dummy.EntityDpsFloatingNumber;
+import ru.mrpetchenka.flanscore.common.entity.dummy.EntityDummy;
+import ru.mrpetchenka.flanscore.common.entity.dummy.EntityFloatingNumber;
 
 public class ModEntity {
     public ModEntity() {

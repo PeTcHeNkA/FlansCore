@@ -1,8 +1,8 @@
 package ru.mrpetchenka.flanscore.client.render;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import ru.mrpetchenka.flanscore.common.entity.EntityDummy;
-import ru.mrpetchenka.flanscore.common.entity.EntityFloatingNumber;
+import ru.mrpetchenka.flanscore.common.entity.dummy.EntityDummy;
+import ru.mrpetchenka.flanscore.common.entity.dummy.EntityFloatingNumber;
 
 public class ModRenders {
     public ModRenders() {

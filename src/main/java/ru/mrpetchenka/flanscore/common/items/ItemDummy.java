@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import ru.mrpetchenka.flanscore.common.entity.EntityDummy;
+import ru.mrpetchenka.flanscore.common.entity.dummy.EntityDummy;
 import ru.mrpetchenka.flanscore.common.tabs.ModCreativeTabs;
 import ru.mrpetchenka.flanscore.utils.Backend;
 

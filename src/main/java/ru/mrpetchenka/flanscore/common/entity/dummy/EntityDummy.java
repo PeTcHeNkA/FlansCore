@@ -1,4 +1,4 @@
-package ru.mrpetchenka.flanscore.common.entity;
+package ru.mrpetchenka.flanscore.common.entity.dummy;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
@@ -17,7 +17,7 @@ import ru.mrpetchenka.flanscore.common.items.ModItems;
 import ru.mrpetchenka.flanscore.network.packets.dummy.DamageMessage;
 
 public class EntityDummy extends EntityLiving implements IEntityAdditionalSpawnData {
-    private float customRotation;
+    public float customRotation;
     public float shake;
     public float shakeAnimation;
     public float lastDamage;

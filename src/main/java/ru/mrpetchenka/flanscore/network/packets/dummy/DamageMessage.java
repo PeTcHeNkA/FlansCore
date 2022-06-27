@@ -6,8 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import ru.mrpetchenka.flanscore.common.entity.EntityDummy;
-import ru.mrpetchenka.flanscore.common.entity.EntityFloatingNumber;
+import ru.mrpetchenka.flanscore.common.entity.dummy.EntityDummy;
+import ru.mrpetchenka.flanscore.common.entity.dummy.EntityFloatingNumber;
 import ru.mrpetchenka.flanscore.network.PacketBase;
 
 public class DamageMessage extends PacketBase {

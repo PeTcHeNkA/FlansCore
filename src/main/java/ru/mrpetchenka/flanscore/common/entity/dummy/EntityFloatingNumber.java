@@ -1,4 +1,4 @@
-package ru.mrpetchenka.flanscore.common.entity;
+package ru.mrpetchenka.flanscore.common.entity.dummy;
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;

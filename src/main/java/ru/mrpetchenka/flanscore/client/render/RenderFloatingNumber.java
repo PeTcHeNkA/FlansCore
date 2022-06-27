@@ -7,8 +7,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import ru.mrpetchenka.flanscore.common.entity.EntityDpsFloatingNumber;
-import ru.mrpetchenka.flanscore.common.entity.EntityFloatingNumber;
+import ru.mrpetchenka.flanscore.common.entity.dummy.EntityDpsFloatingNumber;
+import ru.mrpetchenka.flanscore.common.entity.dummy.EntityFloatingNumber;
 
 import java.text.DecimalFormat;
 
@@ -44,9 +44,9 @@ public class RenderFloatingNumber extends Render {
         if (dps) {
             s = "DPS: " + s;
         }
-        GL11.glTranslated(-fontRenderer.getStringWidth(s) / 2, 0.0, 0.0);
+        GL11.glTranslated((float) -fontRenderer.getStringWidth(s) / 2, 0.0, 0.0);
         fontRenderer.drawString(s, 0, 0, -1, true);
-        GL11.glTranslated(fontRenderer.getStringWidth(s) / 2, 0.0, 0.0);
+        GL11.glTranslated((float) fontRenderer.getStringWidth(s) / 2, 0.0, 0.0);
         GL11.glDepthMask(true);
         GL11.glEnable(2896);
         GL11.glPopMatrix();

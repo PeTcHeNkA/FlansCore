@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import ru.mrpetchenka.flanscore.common.entity.EntityTracerGloomy;
+import ru.mrpetchenka.flanscore.common.entity.gun.EntityTracerGloomy;
 import ru.mrpetchenka.flanscore.common.items.ItemGun;
 import ru.mrpetchenka.flanscore.network.PacketBase;
 import ru.mrpetchenka.flanscore.utils.EnumLog;
@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PacketGunFire extends PacketBase {
-    public boolean held;
-    public boolean left;
-    public float yaw;
-    public float pitch;
-    public List<EntityTracerGloomy.BulletHitPosition> hits;
-    public int entityId;
+    private boolean held;
+    private boolean left;
+    private float yaw;
+    private float pitch;
+    private List<EntityTracerGloomy.BulletHitPosition> hits;
+    private int entityId;
 
     public PacketGunFire() {
     }
@@ -111,6 +111,7 @@ public class PacketGunFire extends PacketBase {
                 if (hit.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
                     hit.entityHit = playerEntity.worldObj.getEntityByID(this.entityId);
                     if (hit.entityHit != null) {
+                        //Logger.log(EnumLog.Debug, String.format("x:%s y:%s z:%s", hit.hitVec.xCoord, hit.hitVec.xCoord, hit.hitVec.xCoord));
                         hit.entityHit.attackEntityFrom(DamageSource.causePlayerDamage(playerEntity), 10);
                     }
                     hit.typeOfHit = MovingObjectPosition.MovingObjectType.MISS;
@@ -128,6 +129,6 @@ public class PacketGunFire extends PacketBase {
     @SideOnly(Side.CLIENT)
     @Override
     public void handleClientSide(EntityPlayer clientPlayer) {
-        Logger.log(EnumLog.Warning, "Received gun button packet on client. Skipping.");
+        Logger.log(EnumLog.Notice, "Received gun button packet on client. Skipping.");
     }
 }

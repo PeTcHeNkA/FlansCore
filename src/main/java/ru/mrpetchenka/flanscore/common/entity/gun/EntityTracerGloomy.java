@@ -1,4 +1,4 @@
-package ru.mrpetchenka.flanscore.common.entity;
+package ru.mrpetchenka.flanscore.common.entity.gun;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;

@@ -1,13 +1,8 @@
 package ru.mrpetchenka.flanscore.client;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import org.lwjgl.opengl.Display;
 import ru.mrpetchenka.flanscore.client.render.ModRenders;
-import ru.mrpetchenka.flanscore.client.render.RenderDummy;
-import ru.mrpetchenka.flanscore.client.render.RenderFloatingNumber;
 import ru.mrpetchenka.flanscore.common.CommonProxy;
-import ru.mrpetchenka.flanscore.common.entity.EntityDummy;
-import ru.mrpetchenka.flanscore.common.entity.EntityFloatingNumber;
 import ru.mrpetchenka.flanscore.utils.Backend;
 
 public class ClientProxy extends CommonProxy {

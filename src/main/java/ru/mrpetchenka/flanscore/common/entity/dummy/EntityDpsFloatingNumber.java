@@ -1,4 +1,4 @@
-package ru.mrpetchenka.flanscore.common.entity;
+package ru.mrpetchenka.flanscore.common.entity.dummy;
 
 import net.minecraft.world.World;
 

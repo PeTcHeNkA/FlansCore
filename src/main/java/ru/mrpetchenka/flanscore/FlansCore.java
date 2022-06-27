@@ -17,7 +17,7 @@ public class FlansCore {
     private static FlansCore instance;
 
     @SidedProxy(clientSide = Backend.clientSide, serverSide = Backend.serverSide)
-    private static CommonProxy proxy;
+    public static CommonProxy proxy;
     private static final PacketHandler packetHandler = new PacketHandler();
 
     @Mod.EventHandler
