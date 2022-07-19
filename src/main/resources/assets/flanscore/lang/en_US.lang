@@ -1,4 +1,4 @@
 itemGroup.tabFlan0=Оружие Flan's Core
 tile.workbench.name=Стол модификации оружия
-item.Dummy.name=Dummy
+item.dummy.name=Dummy
 entity.flanscore.Dummy.name=Dummy
