@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
+import ru.mrpetchenka.flanscore.client.ClientProxy;
 import ru.mrpetchenka.flanscore.common.items.ItemGun;
 
 @SideOnly(Side.CLIENT)
@@ -43,7 +44,7 @@ public class EntityBulletTracer extends EntityFX {
         float b = 0.0F;
         float tracerSize = super.particleScale;
 
-        Minecraft.getMinecraft().entityRenderer.disableLightmap(0.0D);
+        ClientProxy.mc.entityRenderer.disableLightmap(0.0D);
         GL11.glPushMatrix();
         GL11.glDisable(3553);
         GL11.glEnable(3042);
