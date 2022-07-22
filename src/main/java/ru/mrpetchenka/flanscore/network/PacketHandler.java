@@ -21,6 +21,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
 import ru.mrpetchenka.flanscore.network.packets.dummy.DamageMessage;
 import ru.mrpetchenka.flanscore.network.packets.gun.PacketGunFire;
+import ru.mrpetchenka.flanscore.network.packets.gun.PacketPlaySound;
 import ru.mrpetchenka.flanscore.network.packets.gun.PacketShootAdditions;
 import ru.mrpetchenka.flanscore.utils.Backend;
 import ru.mrpetchenka.flanscore.utils.EnumLog;
@@ -50,6 +51,7 @@ public class PacketHandler extends MessageToMessageCodec<FMLProxyPacket, PacketB
         registerPacket(PacketShootAdditions.class);
         //dummy
         registerPacket(DamageMessage.class);
+        registerPacket(PacketPlaySound.class);
     }
 
     //post-Initialisation method called from FMLPostInitializationEvent in mod

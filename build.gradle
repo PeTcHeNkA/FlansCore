@@ -46,6 +46,12 @@ processResources {
     }
 }
 
+task packResources(type: Zip) {
+	from sourceSets.main.resources.srcDirs
+	archiveName mod_archives_name + '.zip'
+	destinationDir = file("run/resourcepacks")
+}
+
 task devJar(type: Jar) {
 	classifier = 'dev'
 	from sourceSets.main.output

@@ -1,0 +1,6 @@
+{
+  "linkShoot": {
+    "category" : "player",
+    "sounds" : [ "flanscore:linkShoot" ]
+  }
+}
