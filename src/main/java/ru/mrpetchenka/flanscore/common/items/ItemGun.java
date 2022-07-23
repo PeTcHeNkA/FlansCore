@@ -1,13 +1,11 @@
 package ru.mrpetchenka.flanscore.common.items;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +19,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import ru.mrpetchenka.flanscore.FlansCore;
+import ru.mrpetchenka.flanscore.client.ClientProxy;
 import ru.mrpetchenka.flanscore.common.entity.gun.EntityTracerGloomy;
 import ru.mrpetchenka.flanscore.common.tabs.ModCreativeTabs;
 import ru.mrpetchenka.flanscore.network.packets.gun.PacketGunFire;
@@ -41,7 +40,6 @@ public class ItemGun extends Item {
     private static float originalMouseSensitivity;
     private static float originalFovSetting;
     private List<EntityTracerGloomy.BulletHitPosition> hits = new ArrayList<>();
-    private static final GameSettings gameSettings = FMLClientHandler.instance().getClient().gameSettings;
 
     public ItemGun(String name) {
         this.setMaxStackSize(1);
@@ -60,14 +58,15 @@ public class ItemGun extends Item {
 
             if (isScope && ((EntityPlayer) pEnt).getHeldItem() != itemstack) {
                 isScope = false;
-                gameSettings.fovSetting = originalFovSetting;
-                gameSettings.mouseSensitivity = originalMouseSensitivity;
+                ClientProxy.gameSettings.fovSetting = originalFovSetting;
+                ClientProxy.gameSettings.mouseSensitivity = originalMouseSensitivity;
             }
         }
     }
 
     @SideOnly(Side.CLIENT)
     public void onUpdateClient(ItemStack itemstack, World world, Entity entity, int i, boolean flag) {
+        if(ClientProxy.mc.currentScreen != null) return;
         if (entity instanceof EntityPlayer && ((EntityPlayer) entity).inventory.getCurrentItem() == itemstack) {
             EntityPlayer player = (EntityPlayer) entity;
 
@@ -95,14 +94,14 @@ public class ItemGun extends Item {
 
             if (rightMouseHeld && !lastRightMouseHeld) {
                 if (!isScope) {
-                    originalFovSetting = gameSettings.fovSetting;
-                    originalMouseSensitivity = gameSettings.mouseSensitivity;
+                    originalFovSetting = ClientProxy.gameSettings.fovSetting;
+                    originalMouseSensitivity = ClientProxy.gameSettings.mouseSensitivity;
 
-                    gameSettings.fovSetting -= 25;
-                    gameSettings.mouseSensitivity = gameSettings.mouseSensitivity / 1.2f;
+                    ClientProxy.gameSettings.fovSetting -= 25;
+                    ClientProxy.gameSettings.mouseSensitivity = ClientProxy.gameSettings.mouseSensitivity / 1.2f;
                 } else {
-                    gameSettings.mouseSensitivity = originalMouseSensitivity;
-                    gameSettings.fovSetting = originalFovSetting;
+                    ClientProxy.gameSettings.mouseSensitivity = originalMouseSensitivity;
+                    ClientProxy.gameSettings.fovSetting = originalFovSetting;
                 }
                 isScope = !isScope;
             }

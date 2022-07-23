@@ -158,7 +158,16 @@ public class EntityDummy extends EntityLiving implements IEntityMultiPartDummy, 
     }
 
     public boolean attackEntityFromPart(EntityDummyPart entityPart, DamageSource source, float damage) {
-        if (entityPart == this.dummyPartHead) damage = 20f;
+        if (entityPart == this.dummyPartHead) damage *= 2f;
+
+        //Temp... It's bad option of fix problem with sound and hurt entity!
+        this.worldObj.setEntityState(this, (byte) 2);
+        this.playSound(this.getHurtSound(), this.getSoundVolume() - 0.5f, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+
         return this.attackEntityFrom(source, damage);
+    }
+
+    protected String getHurtSound() {
+        return "game.player.hurt";
     }
 }
